@@ -73,8 +73,8 @@ class FormCadUserState extends State<FormCadUser> {
               ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
-                      Scaffold.of(context).showSnackBar(
-                          SnackBar(content: Text('Processando...')));
+                      Scaffold.of(context).showSnackBar(SnackBar(
+                          content: Text('Usuário cadastrado com sucesso')));
                     }
                   },
                   child: Text('Cadastrar')),

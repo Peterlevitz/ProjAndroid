@@ -80,12 +80,14 @@ class FormCadSerieState extends State<FormCadSerie> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
               Text('Título da série:'),
-              TextFormField(validator: (value) {
-                if (value.isEmpty) {
-                  return 'Campo de preenchimento obrigatório';
-                }
-                return null;
-              }),
+              TextFormField(
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Campo de preenchimento obrigatório';
+                  }
+                  return null;
+                },
+              ),
               Text('Sinopse:'),
               TextFormField(
                 validator: (value) {
@@ -133,8 +135,8 @@ class FormCadSerieState extends State<FormCadSerie> {
               ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
-                      Scaffold.of(context).showSnackBar(
-                          SnackBar(content: Text('Processando...')));
+                      Scaffold.of(context).showSnackBar(SnackBar(
+                          content: Text('Série cadastrada com sucesso')));
                     }
                   },
                   child: Text('Cadastrar')),
