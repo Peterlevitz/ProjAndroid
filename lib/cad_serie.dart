@@ -132,21 +132,28 @@ class FormCadSerieState extends State<FormCadSerie> {
                     }
                     return null;
                   }),
-              ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState.validate()) {
-                      Scaffold.of(context).showSnackBar(SnackBar(
-                          content: Text('Série cadastrada com sucesso')));
-                    }
-                  },
-                  child: Text('Cadastrar')),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      new MaterialPageRoute(builder: (context) => new MyApp()));
-                },
-                child: Text('Voltar'),
+              Container(
+                alignment: Alignment.center,
+                child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState.validate()) {
+                        Scaffold.of(context).showSnackBar(SnackBar(
+                            content: Text('Série cadastrada com sucesso')));
+                      }
+                    },
+                    child: Text('Cadastrar')),
               ),
+              Container(
+                  alignment: Alignment.center,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (context) => new MyApp()));
+                    },
+                    child: Text('Voltar'),
+                  )),
             ])));
   }
 }
