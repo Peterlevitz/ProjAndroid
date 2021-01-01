@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "173485295098",
+    "project_id": "ativ-android-type",
+    "storage_bucket": "ativ-android-type.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:173485295098:android:fac8ecd1c60a6279ac9043",
+        "android_client_info": {
+          "package_name": "com.aleleo.proj_final_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "173485295098-q1amvvhnus1680needn35q37b182at6e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqqn0bABae0tfxlzlUNVTnYYnRXKCYwok"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "173485295098-q1amvvhnus1680needn35q37b182at6e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

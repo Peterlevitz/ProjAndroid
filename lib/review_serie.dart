@@ -13,7 +13,7 @@ class RevSerie extends StatelessWidget {
             DrawerHeader(
               child: Text('Menu Principal'),
               decoration: BoxDecoration(
-                color: Colors.deepPurple,
+                color: Color(0xffffdcba),
               ),
             ),
             ListTile(

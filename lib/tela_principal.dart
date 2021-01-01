@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:proj_final_mobile/bloc/auth_bloc.dart';
+import 'package:proj_final_mobile/bloc/auth_event.dart';
 import 'package:proj_final_mobile/cad_serie.dart';
 import 'package:proj_final_mobile/rank_serie.dart';
 import 'package:proj_final_mobile/review_serie.dart';
-import 'main.dart';
+
+import 'bloc/database_bloc.dart';
 
 class TelaPrincipal extends StatelessWidget {
+  final String all = "all";
   @override
   Widget build(BuildContext context) {
+    final counterBloc = BlocProvider.of<DatabaseBloc>(context);
     return Scaffold(
         drawer: Drawer(
           child: ListView(
@@ -14,7 +20,7 @@ class TelaPrincipal extends StatelessWidget {
               DrawerHeader(
                 child: Text('Menu Principal'),
                 decoration: BoxDecoration(
-                  color: Colors.deepPurple,
+                  color: Color(0xffffdcba),
                 ),
               ),
               ListTile(
@@ -26,29 +32,30 @@ class TelaPrincipal extends StatelessWidget {
               ListTile(
                 title: Text('Cadastro de séries'),
                 onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                      context,
-                      new MaterialPageRoute(
-                          builder: (context) => new CadSerie()));
+                  Navigator.of(context).push(
+                    MaterialPageRoute<DatabaseBloc>(
+                      builder: (context) {
+                        return BlocProvider.value(
+                          value: counterBloc,
+                          child: CadSerie(),
+                        );
+                      },
+                    ),
+                  );
                 },
               ),
               ListTile(
                 title: Text('Ranking de séries'),
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.push(
-                      context,
-                      new MaterialPageRoute(
-                          builder: (context) => new RankSerie()));
+                  Navigator.push(context,
+                      new MaterialPageRoute(builder: (context) => RankSerie()));
                 },
               ),
               ListTile(
                 title: Text('Sair'),
                 onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(context,
-                      new MaterialPageRoute(builder: (context) => new MyApp()));
+                  BlocProvider.of<AuthBloc>(context).add(LogOut());
                 },
               ),
             ],

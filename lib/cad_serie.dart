@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:proj_final_mobile/bloc/database_event.dart';
+import 'package:proj_final_mobile/models/series.dart';
 import 'package:proj_final_mobile/rank_serie.dart';
 import 'package:proj_final_mobile/tela_principal.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:proj_final_mobile/bloc/auth_bloc.dart';
+import 'package:proj_final_mobile/bloc/auth_event.dart';
+import 'package:proj_final_mobile/wrapper.dart';
+import 'bloc/database_bloc.dart';
 import 'main.dart';
 
 class CadSerie extends StatelessWidget {
@@ -13,7 +20,7 @@ class CadSerie extends StatelessWidget {
             DrawerHeader(
               child: Text('Menu Principal'),
               decoration: BoxDecoration(
-                color: Colors.deepPurple,
+                color: Color(0xffffdcba),
               ),
             ),
             ListTile(
@@ -45,9 +52,9 @@ class CadSerie extends StatelessWidget {
             ListTile(
               title: Text('Sair'),
               onTap: () {
-                Navigator.pop(context);
+                BlocProvider.of<AuthBloc>(context).add(LogOut());
                 Navigator.push(context,
-                    new MaterialPageRoute(builder: (context) => new MyApp()));
+                    MaterialPageRoute(builder: (context) => new Wrapper()));
               },
             ),
           ],
@@ -69,25 +76,38 @@ class FormCadSerie extends StatefulWidget {
 }
 
 class FormCadSerieState extends State<FormCadSerie> {
-  final _formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
+  final TvSerie inModel = TvSerie();
 
   @override
   Widget build(BuildContext context) {
     return Form(
-        key: _formKey,
+        key: formKey,
         child: SingleChildScrollView(
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-              Text('Título da série:'),
-              TextFormField(
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Campo de preenchimento obrigatório';
-                  }
-                  return null;
-                },
-              ),
+            child: Padding(
+                padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 15.0),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(height: 10),
+                      TextFormField(
+                        decoration: InputDecoration(
+                            contentPadding:
+                                EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 15.0),
+                            labelText: "Título da série",
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.0))),
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Campo de preenchimento obrigatório';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          inModel.serieName = value;
+                        },
+                      ),
+                      /*
               Text('Sinopse:'),
               TextFormField(
                 validator: (value) {
@@ -131,29 +151,95 @@ class FormCadSerieState extends State<FormCadSerie> {
                       return 'Campo de preenchimento obrigatório';
                     }
                     return null;
-                  }),
-              Container(
-                alignment: Alignment.center,
-                child: ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState.validate()) {
-                        Scaffold.of(context).showSnackBar(SnackBar(
-                            content: Text('Série cadastrada com sucesso')));
-                      }
-                    },
-                    child: Text('Cadastrar')),
-              ),
-              Container(
-                  alignment: Alignment.center,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          new MaterialPageRoute(
-                              builder: (context) => new MyApp()));
-                    },
-                    child: Text('Voltar'),
-                  )),
-            ])));
+                  }),*/
+                      SizedBox(height: 10),
+                      TextFormField(
+                        decoration: InputDecoration(
+                            contentPadding:
+                                EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 15.0),
+                            labelText: "Diretor",
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.0))),
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Campo de preenchimento obrigatório';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          inModel.director = value;
+                        },
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        decoration: InputDecoration(
+                            contentPadding:
+                                EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 15.0),
+                            labelText: "Nota",
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.0))),
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Campo de preenchimento obrigatório';
+                          }
+                          int nota = int.parse(value);
+                          if (!(nota >= 0 || nota <= 10))
+                            return "Adicione uma nota entre 0 e 10";
+                          return null;
+                        },
+                        onSaved: (value) {
+                          inModel.score = int.parse(value);
+                        },
+                      ),
+                      SizedBox(height: 15),
+                      Container(
+                        alignment: Alignment.center,
+                        child: SizedBox(
+                          width: 350.0,
+                          child: RaisedButton(
+                              padding: const EdgeInsets.fromLTRB(
+                                  20.0, 15.0, 20.0, 15.0),
+                              elevation: 5.0,
+                              color: Color(0xffffdcba),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              onPressed: () {
+                                if (formKey.currentState.validate()) {
+                                  formKey.currentState.save();
+                                  BlocProvider.of<DatabaseBloc>(context).add(
+                                      AddDatabase(
+                                          serieName: inModel.serieName,
+                                          director: inModel.director,
+                                          score: inModel.score));
+                                  formKey.currentState.reset();
+                                }
+                              },
+                              child: Text('Cadastrar')),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Container(
+                        alignment: Alignment.center,
+                        child: SizedBox(
+                            width: 350.0,
+                            child: RaisedButton(
+                              padding: const EdgeInsets.fromLTRB(
+                                  20.0, 15.0, 20.0, 15.0),
+                              elevation: 5.0,
+                              color: Color(0xffffdcba),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (context) => new MyApp()));
+                              },
+                              child: Text('Voltar'),
+                            )),
+                      ),
+                    ]))));
   }
 }

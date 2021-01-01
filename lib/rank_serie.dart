@@ -2,6 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:proj_final_mobile/cad_serie.dart';
 import 'package:proj_final_mobile/tela_principal.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:proj_final_mobile/bloc/auth_bloc.dart';
+import 'package:proj_final_mobile/bloc/auth_event.dart';
+import 'package:proj_final_mobile/cad_serie.dart';
+import 'package:proj_final_mobile/rank_serie.dart';
+import 'package:proj_final_mobile/review_serie.dart';
+import 'package:proj_final_mobile/wrapper.dart';
 import 'main.dart';
 
 class RankSerie extends StatelessWidget {
@@ -16,7 +24,7 @@ class RankSerie extends StatelessWidget {
             DrawerHeader(
               child: Text('Menu Principal'),
               decoration: BoxDecoration(
-                color: Colors.deepPurple,
+                color: Color(0xffffdcba),
               ),
             ),
             ListTile(
@@ -48,9 +56,9 @@ class RankSerie extends StatelessWidget {
             ListTile(
               title: Text('Sair'),
               onTap: () {
-                Navigator.pop(context);
+                BlocProvider.of<AuthBloc>(context).add(LogOut());
                 Navigator.push(context,
-                    new MaterialPageRoute(builder: (context) => new MyApp()));
+                    MaterialPageRoute(builder: (context) => new Wrapper()));
               },
             ),
           ],

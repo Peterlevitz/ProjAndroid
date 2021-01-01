@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:proj_final_mobile/bloc/auth_bloc.dart';
+import 'package:proj_final_mobile/bloc/auth_event.dart';
+import 'package:proj_final_mobile/wrapper.dart';
 import 'main.dart';
 import 'package:proj_final_mobile/models/user.dart';
-import 'package:proj_final_mobile/database/task_database_helper.dart';
 import 'dart:core';
 
 class TelaCadastro extends StatelessWidget {
@@ -24,144 +27,182 @@ class FormCadUser extends StatefulWidget {
 }
 
 class FormCadUserState extends State<FormCadUser> {
-  final _formKey = GlobalKey<FormState>();
-  String _nome;
-  String _email;
-  String _username;
-  String _password;
+  GlobalKey<FormState> formKey = new GlobalKey();
 
-  DatabaseHelper helper = DatabaseHelper();
-  List<User> users = List<User>();
+  List<UserModel> users = List<UserModel>();
+  RegisterUser saveInfoData = RegisterUser();
   int count = 0;
-
-  addUser() async {
-    User user =
-        User.withId(await helper.nextId(), _nome, _email, _username, _password);
-    await helper.initDB();
-    await helper.insertUser(user);
-  }
 
   @override
   Widget build(BuildContext context) {
     return Form(
-        key: _formKey,
+        key: formKey,
         child: SingleChildScrollView(
+            child: Container(
+          color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 15.0),
             child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-              Text('Nome completo:'),
-              TextFormField(
-                validator: (value) {
-                  if (value.isEmpty)
-                    return 'Campo de preenchimento obrigatório';
-                  else
-                    return null;
-                },
-                onChanged: (value) {
-                  _nome = value;
-                },
-              ),
-              Text('Email:'),
-              TextFormField(
-                validator: (value) {
-                  if (value.isEmpty)
-                    return 'Campo de preenchimento obrigatório';
-                  else
-                    return null;
-                },
-                onChanged: (value) {
-                  _email = value;
-                },
-              ),
-              Text('Nome de usuário:'),
-              TextFormField(
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Campo de preenchimento obrigatório';
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  _username = value;
-                },
-              ),
-              Text('Senha:'),
-              TextFormField(
-                  obscureText: true,
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Campo de preenchimento obrigatório';
-                    }
-                    return null;
-                  },
-                  onChanged: (value) {
-                    _password = value;
-                  }),
-              Text('Confirmar Senha:'),
-              TextFormField(
-                  obscureText: true,
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Campo de preenchimento obrigatório';
-                    }
-                    return null;
-                  }),
-              Container(
-                alignment: Alignment.center,
-                child: ElevatedButton(
-                    onPressed: () async {
-                      await addUser();
-                      if (_formKey.currentState.validate()) {
-                        Scaffold.of(context).showSnackBar(SnackBar(
-                            content: Text('Usuário cadastrado com sucesso')));
-                      }
+                  Image.asset('assets/images/logoshort2.png',
+                      height: 180, fit: BoxFit.fill),
+                  TextFormField(
+                    decoration: InputDecoration(
+                        contentPadding:
+                            EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 15.0),
+                        labelText: "Nome Completo",
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15.0))),
+                    validator: (value) {
+                      if (value.isEmpty)
+                        return 'Campo de preenchimento obrigatório';
+                      else
+                        return null;
                     },
-                    child: Text('Cadastrar')),
-              ),
-              Container(
-                alignment: Alignment.center,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (context) => new MyApp()));
-                  },
-                  child: Text('Voltar'),
-                ),
-              ),
-              Container(
-                alignment: Alignment.center,
-                child: ElevatedButton(
-                  onPressed: () {
-                    showResults();
-                  },
-                  child: Text('Consultar Banco'),
-                ),
-              )
-            ])));
-  }
-
-  void showResults() {
-    final dbFuture = helper.initDB();
-    dbFuture.then((db) {
-      final usersFuture = helper.getUsers();
-      usersFuture.then((result) {
-        List<User> usersList = List<User>();
-        var usersCount = result.length;
-        for (int c = 0; c < usersCount; c++) {
-          usersList.add(User.fromObject(result[c]));
-          print(usersList[c].id);
-          print(usersList[c].nome);
-          print(usersList[c].email);
-          print(usersList[c].username);
-          print(usersList[c].password);
-        }
-        setState(() {
-          users = usersList;
-          count = usersList.length;
-        });
-      });
-    });
+                    onSaved: (value) {
+                      saveInfoData.nome = value;
+                    },
+                  ),
+                  SizedBox(height: 10),
+                  TextFormField(
+                    decoration: InputDecoration(
+                        contentPadding:
+                            EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 15.0),
+                        labelText: "Email",
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15.0))),
+                    validator: (value) {
+                      if (value.isEmpty)
+                        return 'Campo de preenchimento obrigatório';
+                      else
+                        return null;
+                    },
+                    onSaved: (value) {
+                      saveInfoData.email = value;
+                    },
+                  ),
+                  SizedBox(height: 10),
+                  TextFormField(
+                    decoration: InputDecoration(
+                        contentPadding:
+                            EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 15.0),
+                        labelText: "Usuário",
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15.0))),
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Campo de preenchimento obrigatório';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      saveInfoData.username = value;
+                    },
+                  ),
+                  SizedBox(height: 10),
+                  TextFormField(
+                      decoration: InputDecoration(
+                          contentPadding:
+                              EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 15.0),
+                          labelText: "Senha",
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15.0))),
+                      obscureText: true,
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Campo de preenchimento obrigatório';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        saveInfoData.password = value;
+                      }),
+                  SizedBox(height: 10),
+                  TextFormField(
+                      decoration: InputDecoration(
+                          contentPadding:
+                              EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 15.0),
+                          labelText: "Confirmar Senha",
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15.0))),
+                      obscureText: true,
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Campo de preenchimento obrigatório';
+                        }
+                        return null;
+                      }),
+                  SizedBox(height: 15),
+                  Container(
+                    alignment: Alignment.center,
+                    child: SizedBox(
+                      width: 350.0,
+                      child: RaisedButton(
+                          padding:
+                              const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                          elevation: 5.0,
+                          color: Color(0xffffdcba),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          onPressed: () async {
+                            if (formKey.currentState.validate()) {
+                              formKey.currentState.save();
+                              BlocProvider.of<AuthBloc>(context)
+                                  .add(saveInfoData);
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Text(
+                                          "Usuário cadastrado com sucesso!"),
+                                      content: Text(
+                                          "Clique em OK para ser redirecionado para a tela principal"),
+                                      actions: [
+                                        FlatButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          new Wrapper()));
+                                            },
+                                            child: Text("OK"))
+                                      ],
+                                    );
+                                  });
+                            }
+                          },
+                          child: Text('Cadastrar')),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Container(
+                    alignment: Alignment.center,
+                    child: SizedBox(
+                      width: 350.0,
+                      child: RaisedButton(
+                        padding:
+                            const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                        elevation: 5.0,
+                        color: Color(0xffffdcba),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                  builder: (context) => new MyApp()));
+                        },
+                        child: Text('Voltar'),
+                      ),
+                    ),
+                  ),
+                ]),
+          ),
+        )));
   }
 }
