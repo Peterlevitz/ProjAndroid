@@ -2,15 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:proj_final_mobile/cad_serie.dart';
 import 'package:proj_final_mobile/tela_principal.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proj_final_mobile/bloc/auth_bloc.dart';
 import 'package:proj_final_mobile/bloc/auth_event.dart';
-import 'package:proj_final_mobile/cad_serie.dart';
-import 'package:proj_final_mobile/rank_serie.dart';
-import 'package:proj_final_mobile/review_serie.dart';
 import 'package:proj_final_mobile/wrapper.dart';
-import 'main.dart';
 
 class RankSerie extends StatelessWidget {
   final fruits = ['apples', 'oranges', 'bananas'];

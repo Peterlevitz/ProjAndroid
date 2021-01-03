@@ -139,15 +139,6 @@ class _ReviewPageState extends State<ReviewPage> {
                             Text('Avaliação de série enviada com sucesso')));
                   }
                 }),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (context) => new SeriesList()));
-              },
-              child: Text('Voltar'),
-            )
           ],
         ),
       ),
