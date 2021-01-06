@@ -18,7 +18,11 @@ class DatabaseService {
   }
 
   removeSerie(String id) async {
-    return await serieCollections.doc().collection("series").doc(id).delete();
+    return await serieCollections
+        .doc(uid)
+        .collection("series")
+        .doc(id)
+        .delete();
   }
 
   updateSerie(String id, String serieName, String director, int score) async {

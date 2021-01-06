@@ -22,12 +22,12 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
     if (event is AddDatabase) {
       _databaseService.addSerie(event.serieName, event.director, event.score);
     } else if (event is DeleteDatabase) {
+      print("entrei no delete database");
       _databaseService.removeSerie(event.docId);
     } else if (event is UpdateDatabase) {
       _databaseService.updateSerie(
           event.serieId, event.serieName, event.director, event.score);
     } else if (event is ReceivedNewList) {
-      print("entrei no received new list");
       yield SerieDatabaseState(event.serie);
     }
   }

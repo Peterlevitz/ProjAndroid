@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:proj_final_mobile/models/series.dart';
 import 'package:proj_final_mobile/rank_serie.dart';
 import 'package:proj_final_mobile/tela_principal.dart';
 import 'main.dart';
 
 class RevSerie extends StatelessWidget {
+  final String idSerie;
+
+  const RevSerie({this.idSerie}) : super();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

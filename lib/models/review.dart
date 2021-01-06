@@ -1,7 +1,7 @@
 class ReviewSerie {
   String id;
   String serieId;
-  String score;
+  int score;
   String comment;
 
   ReviewSerie({this.id, this.serieId, this.score, this.comment});
