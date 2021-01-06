@@ -5,6 +5,6 @@ abstract class DatabaseState {}
 class UnauthenticatedDatabaseState extends DatabaseState {}
 
 class SerieDatabaseState extends DatabaseState {
-  List<TvSerie> series;
+  List<Series> series;
   SerieDatabaseState(this.series);
 }

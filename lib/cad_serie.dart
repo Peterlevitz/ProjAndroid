@@ -77,10 +77,11 @@ class FormCadSerie extends StatefulWidget {
 
 class FormCadSerieState extends State<FormCadSerie> {
   final formKey = GlobalKey<FormState>();
-  final TvSerie inModel = TvSerie();
+  final Series inModel = Series();
 
   @override
   Widget build(BuildContext context) {
+    final counterBloc = BlocProvider.of<DatabaseBloc>(context);
     return Form(
         key: formKey,
         child: SingleChildScrollView(
@@ -107,51 +108,6 @@ class FormCadSerieState extends State<FormCadSerie> {
                           inModel.serieName = value;
                         },
                       ),
-                      /*
-              Text('Sinopse:'),
-              TextFormField(
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Campo de preenchimento obrigatório';
-                  }
-                  return null;
-                },
-                maxLines: 5,
-              ),
-              Text('Duração dos episódios'),
-              TextFormField(validator: (value) {
-                if (value.isEmpty) {
-                  return 'Campo de preenchimento obrigatório';
-                }
-                return null;
-              }),
-              Text('Número de episódios:'),
-              TextFormField(
-                  obscureText: true,
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Campo de preenchimento obrigatório';
-                    }
-                    return null;
-                  }),
-              Text('Temporadas:'),
-              TextFormField(
-                  obscureText: true,
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Campo de preenchimento obrigatório';
-                    }
-                    return null;
-                  }),
-              Text('Faixa etária:'),
-              TextFormField(
-                  obscureText: true,
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Campo de preenchimento obrigatório';
-                    }
-                    return null;
-                  }),*/
                       SizedBox(height: 10),
                       TextFormField(
                         decoration: InputDecoration(
@@ -183,7 +139,7 @@ class FormCadSerieState extends State<FormCadSerie> {
                             return 'Campo de preenchimento obrigatório';
                           }
                           int nota = int.parse(value);
-                          if (!(nota >= 0 || nota <= 10))
+                          if (!(nota <= 0 || nota <= 10))
                             return "Adicione uma nota entre 0 e 10";
                           return null;
                         },
@@ -232,10 +188,16 @@ class FormCadSerieState extends State<FormCadSerie> {
                                 borderRadius: BorderRadius.circular(15.0),
                               ),
                               onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    new MaterialPageRoute(
-                                        builder: (context) => new MyApp()));
+                                Navigator.of(context).push(
+                                  MaterialPageRoute<DatabaseBloc>(
+                                    builder: (context) {
+                                      return BlocProvider.value(
+                                        value: counterBloc,
+                                        child: TelaPrincipal(),
+                                      );
+                                    },
+                                  ),
+                                );
                               },
                               child: Text('Voltar'),
                             )),

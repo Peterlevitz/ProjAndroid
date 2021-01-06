@@ -1,15 +1,15 @@
-class TvSerie {
+class Series {
   String id;
   String serieName;
   String director;
   int score;
 
-  TvSerie({this.id, this.serieName, this.director, this.score});
+  Series({this.id, this.serieName, this.director, this.score});
 
-  TvSerie.fromMap(String id, Map<String, dynamic> map) {
+  Series.fromMap(String id, Map<String, dynamic> map) {
     this.id = id;
     this.serieName = map["serieName"];
-    this.serieName = map["diretor"];
-    this.serieName = map["score"];
+    this.director = map["director"];
+    this.score = map["score"];
   }
 }

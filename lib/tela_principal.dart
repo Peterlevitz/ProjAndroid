@@ -3,12 +3,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proj_final_mobile/bloc/auth_bloc.dart';
 import 'package:proj_final_mobile/bloc/auth_event.dart';
 import 'package:proj_final_mobile/cad_serie.dart';
+import 'package:proj_final_mobile/models/series.dart';
 import 'package:proj_final_mobile/rank_serie.dart';
-import 'package:proj_final_mobile/review_serie.dart';
+import 'package:proj_final_mobile/serie_tile.dart';
 
 import 'bloc/database_bloc.dart';
+import 'bloc/database_state.dart';
 
-class TelaPrincipal extends StatelessWidget {
+class TelaPrincipal extends StatefulWidget {
+  TelaPrincipal({Key key, this.serie}) : super(key: key);
+  final String serie;
+
+  @override
+  _MyTelaPrincipalState createState() => _MyTelaPrincipalState();
+}
+
+class _MyTelaPrincipalState extends State<TelaPrincipal> {
   final String all = "all";
   @override
   Widget build(BuildContext context) {
@@ -68,100 +78,64 @@ class TelaPrincipal extends StatelessWidget {
   }
 }
 
-class Serie {
-  Serie({this.serieName, this.isAnimated, this.diretor, this.capa});
-  final String serieName;
-  final bool isAnimated;
-  final String diretor;
-  final String capa;
-}
-
-List<Serie> allSeries = [
-  Serie(
-      serieName: "Game of Thrones",
-      isAnimated: true,
-      diretor: 'D. Beioff, A. Taylor, A. Graves, M. Mylod e J. Podeswa',
-      capa: 'got.jpg'),
-  Serie(
-      serieName: "Friends",
-      isAnimated: true,
-      diretor: "David Crane e Marta Kauffman",
-      capa: 'friends.png'),
-  Serie(
-      serieName: "The Big Bang Theory",
-      isAnimated: false,
-      diretor: 'Bill Prady and Chuck Lorre',
-      capa: 'tbbt.jpg'),
-  Serie(
-      serieName: "Lovecraft Country",
-      isAnimated: true,
-      diretor: "Jordan Peele",
-      capa: 'lovecraft.jpg'),
-  Serie(
-      serieName: "Prison Break",
-      isAnimated: true,
-      diretor: "Bobby Roth",
-      capa: 'prison.jpg'),
-  Serie(
-      serieName: "The Blacklist",
-      isAnimated: true,
-      diretor: "Jon Bokenkamp",
-      capa: 'blacklist.png'),
-  Serie(
-      serieName: "Breaking Bad",
-      isAnimated: true,
-      diretor: "Vince Gilligan",
-      capa: 'breaking.png'),
-  Serie(
-      serieName: "Dark",
-      isAnimated: true,
-      diretor: "Baran bo Odar e Jantje Friese",
-      capa: 'dark.jpg'),
-  Serie(
-      serieName: "The Boys",
-      isAnimated: true,
-      diretor: "Hartley Gorenstein",
-      capa: 'theboys.png'),
-];
-
-class SeriesList extends StatefulWidget {
-  @override
-  _SeriesListState createState() => _SeriesListState();
-}
-
-class _SeriesListState extends State<SeriesList> {
-  List<Serie> visibleCountries;
-
-  @override
-  void initState() {
-    visibleCountries = allSeries;
-    super.initState();
-  }
-
+class SeriesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: ListView.builder(
-            itemCount: allSeries.length,
-            itemBuilder: (context, index) {
-              return Card(
-                child: ListTile(
-                  title: Text(allSeries[index].serieName),
-                  subtitle: Text(allSeries[index].diretor),
-                  leading: CircleAvatar(
-                    backgroundImage:
-                        AssetImage('assets/images/${allSeries[index].capa}'),
-                  ),
-                  trailing: Icon(Icons.rate_review),
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => new RevSerie()));
-                  },
-                ),
-              );
-            }));
+    return BlocBuilder<DatabaseBloc, DatabaseState>(
+      builder: (context, state) {
+        if (state is SerieDatabaseState) {
+          List<Series> list = state.series;
+          return ListView.builder(
+              itemCount: list.length,
+              itemBuilder: (context, index) {
+                return SerieTile(serie: list[index]);
+              });
+        } else {
+          return Text("Você é mágico");
+        }
+      },
+    );
   }
 }
+
+// class SeriesList extends StatefulWidget {
+//   @override
+//   _SeriesListState createState() => _SeriesListState();
+// }
+
+// class _SeriesListState extends State<SeriesList> {
+//   List<Serie> visibleCountries;
+
+//   @override
+//   void initState() {
+//     visibleCountries = allSeries;
+//     super.initState();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//         body: ListView.builder(
+//             itemCount: allSeries.length,
+//             itemBuilder: (context, index) {
+//               return Card(
+//                 child: ListTile(
+//                   title: Text(allSeries[index].serieName),
+//                   subtitle: Text(allSeries[index].diretor),
+//                   leading: CircleAvatar(
+//                     backgroundImage:
+//                         AssetImage('assets/images/${allSeries[index].capa}'),
+//                   ),
+//                   trailing: Icon(Icons.rate_review),
+//                   onTap: () {
+//                     Navigator.pop(context);
+//                     Navigator.push(
+//                         context,
+//                         MaterialPageRoute(
+//                             builder: (context) => new RevSerie()));
+//                   },
+//                 ),
+//               );
+//             }));
+//   }
+// }

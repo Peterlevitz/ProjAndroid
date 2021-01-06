@@ -12,7 +12,7 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
   DatabaseBloc(String uid) : super(UnauthenticatedDatabaseState()) {
     _databaseService = DatabaseService(uid: uid);
     _databaseSubscription =
-        _databaseService.series.listen((List<TvSerie> event) {
+        _databaseService.series.listen((List<Series> event) {
       add(ReceivedNewList(event));
     });
   }
@@ -27,7 +27,8 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
       _databaseService.updateSerie(
           event.serieId, event.serieName, event.director, event.score);
     } else if (event is ReceivedNewList) {
-      yield SerieDatabaseState(event.tvSerie);
+      print("entrei no received new list");
+      yield SerieDatabaseState(event.serie);
     }
   }
 

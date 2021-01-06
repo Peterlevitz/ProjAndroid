@@ -3,7 +3,7 @@ import 'package:proj_final_mobile/models/series.dart';
 
 class DatabaseService {
   final String uid;
-  final String all = "all";
+  //final String all = "all";
 
   DatabaseService({this.uid});
 
@@ -12,7 +12,7 @@ class DatabaseService {
 
   addSerie(String serieName, String director, int score) async {
     return await serieCollections
-        .doc(all)
+        .doc(uid)
         .collection("series")
         .add({"serieName": serieName, "director": director, "score": score});
   }
@@ -23,24 +23,24 @@ class DatabaseService {
 
   updateSerie(String id, String serieName, String director, int score) async {
     return await serieCollections
-        .doc(all)
+        .doc(uid)
         .collection("series")
         .doc(id)
         .update({"serieName": serieName, "director": director, "score": score});
   }
 
-  Stream<List<TvSerie>> get series {
+  Stream<List<Series>> get series {
     return serieCollections
-        .doc(all)
+        .doc(uid)
         .collection("series")
         .snapshots()
         .map(_serieListFromSnapshot);
   }
 
-  List<TvSerie> _serieListFromSnapshot(QuerySnapshot snapshot) {
-    List<TvSerie> series = List();
+  List<Series> _serieListFromSnapshot(QuerySnapshot snapshot) {
+    List<Series> series = List();
     for (var doc in snapshot.docs) {
-      series.add(TvSerie.fromMap(doc.id, doc.data()));
+      series.add(Series.fromMap(doc.id, doc.data()));
     }
     return series;
   }

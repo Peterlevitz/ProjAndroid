@@ -25,6 +25,6 @@ class DeleteDatabase extends DatabaseEvent {
 }
 
 class ReceivedNewList extends DatabaseEvent {
-  List<TvSerie> tvSerie;
-  ReceivedNewList(this.tvSerie);
+  List<Series> serie;
+  ReceivedNewList(this.serie);
 }
