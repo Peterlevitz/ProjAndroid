@@ -4,10 +4,10 @@ import 'package:proj_final_mobile/bloc/database_bloc.dart';
 import 'package:proj_final_mobile/bloc/database_event.dart';
 import 'package:proj_final_mobile/models/series.dart';
 
-class SerieTile extends StatelessWidget {
+class SerieTileRanking extends StatelessWidget {
   final Series serie;
 
-  const SerieTile({this.serie}) : super();
+  const SerieTileRanking({this.serie}) : super();
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +16,12 @@ class SerieTile extends StatelessWidget {
         child: Card(
           margin: EdgeInsets.all(10),
           child: ListTile(
-            leading: CircleAvatar(
-              backgroundColor: Colors.blue[serie.score * 100],
-            ),
             title: Text(serie.serieName),
-            subtitle: Text(serie.director),
+            subtitle: Text(serie.score.toString()),
+            leading: CircleAvatar(
+              backgroundImage:
+                  AssetImage('assets/images/${serie.serieName}.jpg'),
+            ),
             trailing: GestureDetector(
                 child: Icon(Icons.delete),
                 onTap: () {

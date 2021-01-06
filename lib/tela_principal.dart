@@ -6,7 +6,6 @@ import 'package:proj_final_mobile/cad_serie.dart';
 import 'package:proj_final_mobile/models/series.dart';
 import 'package:proj_final_mobile/rank_serie.dart';
 import 'package:proj_final_mobile/serie_tile.dart';
-
 import 'bloc/database_bloc.dart';
 import 'bloc/database_state.dart';
 
@@ -57,9 +56,16 @@ class _MyTelaPrincipalState extends State<TelaPrincipal> {
               ListTile(
                 title: Text('Ranking de séries'),
                 onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(context,
-                      new MaterialPageRoute(builder: (context) => RankSerie()));
+                  Navigator.of(context).push(
+                    MaterialPageRoute<DatabaseBloc>(
+                      builder: (context) {
+                        return BlocProvider.value(
+                          value: counterBloc,
+                          child: RankSerie(),
+                        );
+                      },
+                    ),
+                  );
                 },
               ),
               ListTile(
@@ -91,51 +97,9 @@ class SeriesList extends StatelessWidget {
                 return SerieTile(serie: list[index]);
               });
         } else {
-          return Text("Você é mágico");
+          return Text("Erro ao exibir as séries");
         }
       },
     );
   }
 }
-
-// class SeriesList extends StatefulWidget {
-//   @override
-//   _SeriesListState createState() => _SeriesListState();
-// }
-
-// class _SeriesListState extends State<SeriesList> {
-//   List<Serie> visibleCountries;
-
-//   @override
-//   void initState() {
-//     visibleCountries = allSeries;
-//     super.initState();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         body: ListView.builder(
-//             itemCount: allSeries.length,
-//             itemBuilder: (context, index) {
-//               return Card(
-//                 child: ListTile(
-//                   title: Text(allSeries[index].serieName),
-//                   subtitle: Text(allSeries[index].diretor),
-//                   leading: CircleAvatar(
-//                     backgroundImage:
-//                         AssetImage('assets/images/${allSeries[index].capa}'),
-//                   ),
-//                   trailing: Icon(Icons.rate_review),
-//                   onTap: () {
-//                     Navigator.pop(context);
-//                     Navigator.push(
-//                         context,
-//                         MaterialPageRoute(
-//                             builder: (context) => new RevSerie()));
-//                   },
-//                 ),
-//               );
-//             }));
-//   }
-// }

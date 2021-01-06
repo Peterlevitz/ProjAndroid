@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proj_final_mobile/bloc/auth_event.dart';
 import 'package:proj_final_mobile/cadastro.dart';
-import 'package:proj_final_mobile/tela_principal.dart';
 
 import 'bloc/auth_bloc.dart';
 

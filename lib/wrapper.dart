@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proj_final_mobile/authenticate.dart';
 import 'package:proj_final_mobile/bloc/auth_state.dart';
 import 'package:proj_final_mobile/bloc/database_bloc.dart';
-import 'package:proj_final_mobile/cad_serie.dart';
 import 'package:proj_final_mobile/tela_principal.dart';
 
 import 'bloc/auth_bloc.dart';

@@ -8,11 +8,11 @@ import 'package:proj_final_mobile/bloc/auth_bloc.dart';
 import 'package:proj_final_mobile/bloc/auth_event.dart';
 import 'package:proj_final_mobile/wrapper.dart';
 import 'bloc/database_bloc.dart';
-import 'main.dart';
 
 class CadSerie extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final counterBloc = BlocProvider.of<DatabaseBloc>(context);
     return Scaffold(
       drawer: Drawer(
         child: ListView(
@@ -26,11 +26,16 @@ class CadSerie extends StatelessWidget {
             ListTile(
               title: Text('Lista de séries'),
               onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (context) => new TelaPrincipal()));
+                Navigator.of(context).push(
+                  MaterialPageRoute<DatabaseBloc>(
+                    builder: (context) {
+                      return BlocProvider.value(
+                        value: counterBloc,
+                        child: TelaPrincipal(),
+                      );
+                    },
+                  ),
+                );
               },
             ),
             ListTile(
@@ -42,11 +47,16 @@ class CadSerie extends StatelessWidget {
             ListTile(
               title: Text('Ranking de séries'),
               onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (context) => new RankSerie()));
+                Navigator.of(context).push(
+                  MaterialPageRoute<DatabaseBloc>(
+                    builder: (context) {
+                      return BlocProvider.value(
+                        value: counterBloc,
+                        child: RankSerie(),
+                      );
+                    },
+                  ),
+                );
               },
             ),
             ListTile(
@@ -139,7 +149,7 @@ class FormCadSerieState extends State<FormCadSerie> {
                             return 'Campo de preenchimento obrigatório';
                           }
                           int nota = int.parse(value);
-                          if (!(nota <= 0 || nota <= 10))
+                          if (!(nota >= 0) || !(nota <= 10))
                             return "Adicione uma nota entre 0 e 10";
                           return null;
                         },
