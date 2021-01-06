@@ -8,6 +8,7 @@ import 'package:proj_final_mobile/models/series.dart';
 import 'package:proj_final_mobile/rank_serie.dart';
 import 'package:proj_final_mobile/review_tile.dart';
 import 'package:proj_final_mobile/serie_tile.dart';
+import 'package:proj_final_mobile/tela_principal.dart';
 import 'package:proj_final_mobile/wrapper.dart';
 import 'bloc/database_bloc.dart';
 import 'bloc/database_state.dart';
@@ -38,7 +39,16 @@ class _MyReviewListState extends State<ReviewList> {
               ListTile(
                 title: Text('Lista de séries'),
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.of(context).push(
+                    MaterialPageRoute<DatabaseBloc>(
+                      builder: (context) {
+                        return BlocProvider.value(
+                          value: counterBloc,
+                          child: TelaPrincipal(),
+                        );
+                      },
+                    ),
+                  );
                 },
               ),
               ListTile(

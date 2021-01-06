@@ -19,8 +19,7 @@ class SerieTileRanking extends StatelessWidget {
             title: Text(serie.serieName),
             subtitle: Text(serie.score.toString()),
             leading: CircleAvatar(
-              backgroundImage:
-                  AssetImage('assets/images/${serie.serieName}.jpg'),
+              backgroundColor: Colors.red[serie.score * 50],
             ),
             trailing: GestureDetector(
                 child: Icon(Icons.delete),

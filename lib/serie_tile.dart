@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:proj_final_mobile/bloc/auth_bloc.dart';
+import 'package:proj_final_mobile/bloc/auth_event.dart';
 import 'package:proj_final_mobile/bloc/database_bloc.dart';
 import 'package:proj_final_mobile/bloc/database_event.dart';
 import 'package:proj_final_mobile/models/series.dart';
@@ -20,7 +22,8 @@ class SerieTile extends StatelessWidget {
             margin: EdgeInsets.all(10),
             child: ListTile(
                 leading: CircleAvatar(
-                  backgroundColor: Colors.blue[serie.score * 100],
+                  backgroundImage:
+                      AssetImage('assets/images/${serie.serieName}.jpg'),
                 ),
                 title: Text(serie.serieName),
                 subtitle: Text(serie.director),
