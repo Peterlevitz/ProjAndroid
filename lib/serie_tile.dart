@@ -4,6 +4,7 @@ import 'package:proj_final_mobile/bloc/database_bloc.dart';
 import 'package:proj_final_mobile/bloc/database_event.dart';
 import 'package:proj_final_mobile/models/series.dart';
 import 'package:proj_final_mobile/review_serie.dart';
+import 'package:proj_final_mobile/reviews_list.dart';
 
 class SerieTile extends StatelessWidget {
   final Series serie;
@@ -36,6 +37,21 @@ class SerieTile extends StatelessWidget {
                                 return BlocProvider.value(
                                   value: counterBloc,
                                   child: RevSerie(idSerie: serie.id),
+                                );
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                      GestureDetector(
+                        child: Icon(Icons.list),
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute<DatabaseBloc>(
+                              builder: (context) {
+                                return BlocProvider.value(
+                                  value: counterBloc,
+                                  child: ReviewList(),
                                 );
                               },
                             ),

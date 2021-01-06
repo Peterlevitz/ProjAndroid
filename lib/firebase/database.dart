@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:proj_final_mobile/models/review.dart';
 import 'package:proj_final_mobile/models/series.dart';
 
 class DatabaseService {
@@ -15,6 +16,16 @@ class DatabaseService {
         .doc(uid)
         .collection("series")
         .add({"serieName": serieName, "director": director, "score": score});
+  }
+
+  addReview(
+      String nomeUsuario, String serieId, String comment, int score) async {
+    return await serieCollections.doc(uid).collection("reviews").add({
+      "nomeUsuario": nomeUsuario,
+      "serieId": serieId,
+      "comment": comment,
+      "score": score
+    });
   }
 
   removeSerie(String id) async {
@@ -41,10 +52,26 @@ class DatabaseService {
         .map(_serieListFromSnapshot);
   }
 
+  Stream<List<ReviewSerie>> get reviews {
+    return serieCollections
+        .doc(uid)
+        .collection("reviews")
+        .snapshots()
+        .map(_reviewListFromSnapshot);
+  }
+
   List<Series> _serieListFromSnapshot(QuerySnapshot snapshot) {
     List<Series> series = List();
     for (var doc in snapshot.docs) {
       series.add(Series.fromMap(doc.id, doc.data()));
+    }
+    return series;
+  }
+
+  List<ReviewSerie> _reviewListFromSnapshot(QuerySnapshot snapshot) {
+    List<ReviewSerie> series = List();
+    for (var doc in snapshot.docs) {
+      series.add(ReviewSerie.fromMap(doc.id, doc.data()));
     }
     return series;
   }
